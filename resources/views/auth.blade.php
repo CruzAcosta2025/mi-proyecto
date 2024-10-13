@@ -1,4 +1,4 @@
-@if ($errors->any())
+@if ($errors->any()) 
     <div>
         <ul>
             @foreach ($errors->all() as $error)
@@ -12,6 +12,10 @@
     <div>{{ session('error') }}</div>
 @endif
 
+@if(session('success'))
+    <div>{{ session('success') }}</div>
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +25,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/estilos.css') }}">
-
 </head>
 <body>
     <main>
@@ -45,7 +48,7 @@
                     @csrf
                     <h2>Iniciar Sesión</h2>
                     <input type="email" name="email" required placeholder="Correo Electrónico">
-                    <input type="password" name="password" required placeholder="Contraseña">
+                    <input type="password" name="contraseña" required placeholder="Contraseña">
                     <button type="submit">Entrar</button>
                 </form>
 
@@ -53,11 +56,10 @@
                 <form action="{{ route('register') }}" method="POST" class="formulario__register">
                     @csrf
                     <h2>Regístrarse</h2>
-                    <input type="text" name="nombres" required placeholder="Nombre completos">
+                    <input type="text" name="nombre" required placeholder="Nombres completos">
                     <input type="text" name="apellidos" required placeholder="Apellidos completos">
-                    <input type="text" name="email" required placeholder="Correo Electrónico">
-                    <input type="password" name="password" requiered placeholder="Contraseña">
-                    
+                    <input type="email" name="email" required placeholder="Correo Electrónico">
+                    <input type="password" name="contraseña" required placeholder="Contraseña">
                     <button type="submit">Regístrarse</button>
                 </form>
             </div>
@@ -67,3 +69,4 @@
     <script src="{{ asset('assets/js/script.js') }}"></script>
 </body>
 </html>
+

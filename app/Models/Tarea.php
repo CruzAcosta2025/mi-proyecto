@@ -5,27 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProyectoUsuario extends Model
+class Tarea extends Model
 {
     use HasFactory;
 
-    protected $table = 'proyecto_usuario';
+    protected $table = 'tareas';
     
     protected $fillable = [
         'proyecto_id', 
-        'usuario_id'
+        'nombre', 
+        'descripcion', 
+        'estado', 
+        'prioridad', 
+        'fecha_vencimiento'
     ];
 
-    // Relación con Proyecto
+    // Una tarea pertenece a un proyecto
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class, 'proyecto_id');
     }
-
-    // Relación con Usuario
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
-    }
 }
-

@@ -36,10 +36,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard')->middleware('auth');
 
-Route::get('/projects', [ProyectoController::class, 'index'])->name('projects.index');
-Route::get('/projects/create', [ProyectoController::class, 'create'])->name('projects.create');
-Route::post('/projects', [ProyectoController::class, 'store'])->name('projects.store');
 
+Route::get('/proyectos/create', [ProyectoController::class, 'create'])->name('proyectos.create');
+Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
+Route::get('/proyectos', [ProyectoController::class, 'index'])->name('proyectos.index');
 
 
 

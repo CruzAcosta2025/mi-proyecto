@@ -2,7 +2,6 @@
 
 
 namespace App\Http\Controllers;
-use App\Models\Proyectos;
 
 
 class DashboardController extends Controller

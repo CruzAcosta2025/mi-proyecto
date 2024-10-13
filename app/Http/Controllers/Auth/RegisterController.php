@@ -1,34 +1,41 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class RegisterController extends Controller
 {
     public function register(Request $request)
     {
         try {
+            // Validar los campos de registro
             $request->validate([
-                'nombres' => 'required|string|max:255',
+                'nombre' => 'required|string|max:255',
                 'apellidos' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:usuarios',
-                'password' => 'required|string|min:8',
+                'email' => 'required|string|email|max:255|unique:usuarios,email',
+                'contraseña' => 'required|string|min:8',
             ]);
 
+            // Crear un nuevo usuario
             Usuario::create([
-                'nombres' => $request->nombres,
+                'nombre' => $request->nombre,
                 'apellidos' => $request->apellidos,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'contraseña' => Hash::make($request->contraseña), // Asegúrate de que el campo se llame 'contraseña'
             ]);
 
             return redirect()->route('home')->with('success', 'Usuario registrado exitosamente.');
 
         } catch (\Exception $e) {
-            dd($e->getMessage()); // Muestra el mensaje de error.
+            Log::error('Error al registrar usuario: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Ocurrió un error al registrar el usuario.']); // Mensaje de error más genérico
         }
     }
 }
+

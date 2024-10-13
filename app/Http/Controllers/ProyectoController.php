@@ -1,31 +1,87 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Proyectos; // Asegúrate de que este modelo exista
+use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
 {
+    // Mostrar todos los proyectos
     public function index()
     {
-        $projects = Proyectos::all(); // Obtener todos los proyectos (ajusta según tu modelo)
-        return view('projects.index', compact('projects')); // Asegúrate de que este archivo exista
+        $proyectos = Proyecto::all();
+        return view('proyectos.index', compact('proyectos')); // Retorna una vista
     }
 
+    // Mostrar un proyecto específico
+    public function show($id)
+    {
+        $proyecto = Proyecto::find($id);
+        if (!$proyecto) {
+            return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
+        }
+        return view('proyectos.show', compact('proyecto')); // Retorna una vista
+    }
+
+    // Crear un nuevo proyecto
     public function create()
     {
-        return view('projects.create'); // Asegúrate de que este archivo exista
+        return view('proyectos.create'); // Retorna una vista para crear un nuevo proyecto
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'user_id' => 'required|integer',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
+            'usuario_id' => 'required|integer|exists:usuarios,id',
         ]);
 
-        Proyectos::create($request->all());
-        return redirect()->route('dashboard'); // Redirige a la lista de proyectos
+        Proyecto::create($request->all());
+        return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
+    }
+
+    // Actualizar un proyecto existente
+    public function edit($id)
+    {
+        $proyecto = Proyecto::find($id);
+        if (!$proyecto) {
+            return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
+        }
+        return view('proyectos.edit', compact('proyecto')); // Retorna una vista para editar el proyecto
+    }
+
+    public function update(Request $request, $id)
+    {
+        $proyecto = Proyecto::find($id);
+        if (!$proyecto) {
+            return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
+        }
+
+        $request->validate([
+            'nombre' => 'sometimes|required|string|max:255',
+            'descripcion' => 'sometimes|required|string',
+            'fecha_inicio' => 'sometimes|required|date',
+            'fecha_fin' => 'sometimes|required|date',
+            'usuario_id' => 'sometimes|required|integer|exists:usuarios,id',
+        ]);
+
+        $proyecto->update($request->all());
+        return redirect()->route('proyectos.index')->with('success', 'Proyecto actualizado exitosamente');
+    }
+
+    // Eliminar un proyecto
+    public function destroy($id)
+    {
+        $proyecto = Proyecto::find($id);
+        if (!$proyecto) {
+            return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
+        }
+
+        $proyecto->delete();
+        return redirect()->route('proyectos.index')->with('success', 'Proyecto eliminado exitosamente');
     }
 }

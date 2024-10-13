@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -12,11 +13,11 @@ class LoginController extends Controller
         // Validar los datos de entrada
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'contraseña' => 'required', // Asegúrate de que el campo se llame 'contraseña'
         ]);
 
         // Intentar autenticar al usuario
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'contraseña' => $request->contraseña])) {
             // Si la autenticación es exitosa, redirigir al usuario
             return redirect()->intended('/dashboard'); // Cambia esto por la ruta de destino deseada
         }
@@ -27,9 +28,10 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout ()
+    public function logout()
     {
         Auth::logout(); // Cerrar sesión
         return redirect('/login'); // Redirigir al inicio (login)
     }
 }
+
