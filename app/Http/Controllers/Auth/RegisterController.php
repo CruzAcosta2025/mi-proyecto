@@ -34,7 +34,7 @@ class RegisterController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error al registrar usuario: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Ocurrió un error al registrar el usuario.']); // Mensaje de error más genérico
+            return back()->withErrors(['error' => '']); // Mensaje de error más genérico
         }
     }
 }
