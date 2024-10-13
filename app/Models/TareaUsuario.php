@@ -9,7 +9,7 @@ class TareaUsuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tarea_usuario';
+    protected $table = 'tarea_usuario'; // Nombre de la tabla pivot
     
     protected $fillable = [
         'tarea_id', 

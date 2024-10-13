@@ -19,7 +19,7 @@ class RegisterController extends Controller
                 'nombre' => 'required|string|max:255',
                 'apellidos' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:usuarios,email',
-                'contraseña' => 'required|string|min:8',
+                'password' => 'required|string|min:8',
             ]);
 
             // Crear un nuevo usuario
@@ -27,7 +27,7 @@ class RegisterController extends Controller
                 'nombre' => $request->nombre,
                 'apellidos' => $request->apellidos,
                 'email' => $request->email,
-                'contraseña' => Hash::make($request->contraseña), // Asegúrate de que el campo se llame 'contraseña'
+                'password' => Hash::make($request->password), // Asegúrate de que el campo se llame 'contraseña'
             ]);
 
             return redirect()->route('home')->with('success', 'Usuario registrado exitosamente.');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tarea;
-use App\Models\Proyecto; // Asegúrate de importar el modelo Proyecto
+use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
 class TareaController extends Controller
@@ -13,6 +13,13 @@ class TareaController extends Controller
     {
         $tareas = Tarea::all();
         return view('tareas.index', compact('tareas'));
+    }
+
+    // Mostrar una tarea en particular (con proyecto y usuarios asignados)
+    public function show($id)
+    {
+        $tarea = Tarea::with('proyecto', 'usuarios.usuario')->findOrFail($id);
+        return view('tareas.show', compact('tarea'));
     }
 
     // Mostrar formulario para crear una nueva tarea
@@ -75,3 +82,4 @@ class TareaController extends Controller
         return redirect()->route('tareas.index')->with('success', 'Tarea eliminada exitosamente.');
     }
 }
+

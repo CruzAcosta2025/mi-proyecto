@@ -48,7 +48,7 @@
                     @csrf
                     <h2>Iniciar Sesión</h2>
                     <input type="email" name="email" required placeholder="Correo Electrónico">
-                    <input type="password" name="contraseña" required placeholder="Contraseña">
+                    <input type="password" name="password" required placeholder="Contraseña">
                     <button type="submit">Entrar</button>
                 </form>
 
@@ -59,7 +59,7 @@
                     <input type="text" name="nombre" required placeholder="Nombres completos">
                     <input type="text" name="apellidos" required placeholder="Apellidos completos">
                     <input type="email" name="email" required placeholder="Correo Electrónico">
-                    <input type="password" name="contraseña" required placeholder="Contraseña">
+                    <input type="password" name="password" required placeholder="Contraseña">
                     <button type="submit">Regístrarse</button>
                 </form>
             </div>

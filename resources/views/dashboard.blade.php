@@ -22,12 +22,19 @@
                 <li>
                     <a href="#" id="projects-link"><span class="material-icons">assignment</span> Proyectos</a>
                     <ul class="dropdown">
-                        <li><a href="{{ route('projects.create') }}">Añadir nuevo proyecto</a></li>
-                        <li><a href="{{ route('projects.index') }}">Listar Proyectos</a></li>
+                        <li><a href="{{ route('proyectos.create') }}">Añadir nuevo proyecto</a></li>
+                        <li><a href="{{ route('proyectos.index') }}">Listar Proyectos</a></li>
 
                     </ul>
                 </li>
-                <li><a href="#" id="tasks-link"><span class="material-icons">check_circle</span> Tareas</a></li>
+                <li>
+                    <a href="#" id="tasks-link"><span class="material-icons">check_circle</span> Tareas</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ route('tareas.create') }}">Añadir nueva tarea</a></li>
+                        <li><a href="{{ route('tareas.index') }}">Listar tareas</a></li>
+                    </ul>
+                </li>
+
                 <li><a href="#" id="chat-link"><span class="material-icons">chat</span> Chat</a></li>
                 <li><a href="#" id="video-link"><span class="material-icons">video_call</span> Videoconferencia</a></li>
                 <li><a href="#" id="edit-link"><span class="material-icons">edit</span> Edición de Documentos</a></li>
@@ -69,30 +76,6 @@
                         <p>Designaciones</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Sección de Tareas -->
-            <div id="tasks-section" style="display: none;">
-                <h2>Lista de Tareas</h2>
-                <table class="tasks-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre de la Tarea</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Aquí se mostrarán las tareas -->
-                        <tr>
-                            <td>Tarea 1</td>
-                            <td>Completa</td>
-                        </tr>
-                        <tr>
-                            <td>Tarea 2</td>
-                            <td>En Progreso</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
 
             <!-- Sección de Chat -->
@@ -172,7 +155,7 @@
 
         document.getElementById('list-projects-link').addEventListener('click', function(event) {
             event.preventDefault();
-            window.location.href = "{{ route('projects.index') }}"; // Redirige a la lista de proyectos
+            window.location.href = "{{ route('proyectos.index') }}"; // Redirige a la lista de proyectos
         });
     </script>
 </body>

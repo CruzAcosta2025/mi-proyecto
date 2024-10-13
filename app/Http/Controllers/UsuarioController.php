@@ -8,17 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    // Obtener todos los usuarios y mostrarlos en una vista
+    // Obtener todos los usuarios
     public function index()
     {
-        $usuarios = Usuario::all(); // Obtener todos los usuarios
-        return view('usuarios.index', compact('usuarios')); // Pasar los usuarios a la vista
-    }
-
-    // Mostrar el formulario para crear un nuevo usuario
-    public function create()
-    {
-        return view('usuarios.create'); // Retornar la vista del formulario de creación
+        return response()->json(Usuario::all(), 200);
     }
 
     // Guardar un nuevo usuario
@@ -26,47 +19,35 @@ class UsuarioController extends Controller
     {
         // Validar los campos de la solicitud
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'contraseña' => 'required|string|min:8',
+            'password' => 'required|string|min:8',
             'email' => 'required|string|email|max:255|unique:usuarios',
-            'rol' => 'required|in:admin,miembro',
+            'type' => 'required|in:1,2', // 1 = admin, 2 = staff
         ]);
 
         // Crear un nuevo usuario
-        Usuario::create([
-            'nombre' => $request->nombre,
+        $usuario = Usuario::create([
+            'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
-            'contraseña' => Hash::make($request->contraseña),
+            'password' => Hash::make($request->password), // Hashear la contraseña
             'email' => $request->email,
-            'rol' => $request->rol,
+            'type' => $request->type,
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado con éxito.'); // Redirigir a la lista de usuarios con un mensaje de éxito
+        return response()->json($usuario, 201); // 201 significa que el recurso fue creado
     }
 
-    // Mostrar un usuario específico por ID
+    // Obtener un usuario específico por ID
     public function show($id)
     {
         $usuario = Usuario::find($id);
 
         if (!$usuario) {
-            return redirect()->route('usuarios.index')->with('error', 'Usuario no encontrado'); // Redirigir si no se encuentra el usuario
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
-        return view('usuarios.show', compact('usuario')); // Pasar el usuario a la vista
-    }
-
-    // Mostrar el formulario para editar un usuario
-    public function edit($id)
-    {
-        $usuario = Usuario::find($id);
-
-        if (!$usuario) {
-            return redirect()->route('usuarios.index')->with('error', 'Usuario no encontrado'); // Redirigir si no se encuentra el usuario
-        }
-
-        return view('usuarios.edit', compact('usuario')); // Pasar el usuario a la vista de edición
+        return response()->json($usuario, 200);
     }
 
     // Actualizar un usuario
@@ -75,32 +56,32 @@ class UsuarioController extends Controller
         $usuario = Usuario::find($id);
 
         if (!$usuario) {
-            return redirect()->route('usuarios.index')->with('error', 'Usuario no encontrado'); // Redirigir si no se encuentra el usuario
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
         // Validar los campos
         $request->validate([
-            'nombre' => 'string|max:255',
+            'nombres' => 'string|max:255',
             'apellidos' => 'string|max:255',
-            'contraseña' => 'nullable|string|min:8',
-            'email' => 'string|email|max:255|unique:usuarios,email,' . $id,
-            'rol' => 'in:admin,miembro',
+            'password' => 'nullable|string|min:8',
+            'email' => 'string|email|max:255|unique:usuarios,email,' . $id, // Asegurarse de que el email sea único para este ID
+            'type' => 'in:1,2',
         ]);
 
         // Actualizar los campos
-        $usuario->nombre = $request->nombre ?? $usuario->nombre;
+        $usuario->nombres = $request->nombres ?? $usuario->nombres;
         $usuario->apellidos = $request->apellidos ?? $usuario->apellidos;
 
-        if ($request->contraseña) {
-            $usuario->contraseña = Hash::make($request->contraseña); // Actualizar la contraseña solo si es proporcionada
+        if ($request->password) {
+            $usuario->password = Hash::make($request->password); // Actualizar la contraseña solo si es proporcionada
         }
 
         $usuario->email = $request->email ?? $usuario->email;
-        $usuario->rol = $request->rol ?? $usuario->rol;
+        $usuario->type = $request->type ?? $usuario->type;
 
         $usuario->save();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado con éxito.'); // Redirigir a la lista de usuarios con un mensaje de éxito
+        return response()->json($usuario, 200);
     }
 
     // Eliminar un usuario
@@ -109,11 +90,11 @@ class UsuarioController extends Controller
         $usuario = Usuario::find($id);
 
         if (!$usuario) {
-            return redirect()->route('usuarios.index')->with('error', 'Usuario no encontrado'); // Redirigir si no se encuentra el usuario
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
         $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado con éxito.'); // Redirigir a la lista de usuarios con un mensaje de éxito
+        return response()->json(null, 204); // 204 significa que no hay contenido en la respuesta
     }
 }

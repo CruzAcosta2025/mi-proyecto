@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proyecto;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -27,8 +28,11 @@ class ProyectoController extends Controller
     // Crear un nuevo proyecto
     public function create()
     {
-        return view('proyectos.create'); // Retorna una vista para crear un nuevo proyecto
+        $usuarios = Usuario::all(); // Obtener todos los usuarios
+        return view('proyectos.create', compact('usuarios')); // Retorna la vista y pasa los usuarios
     }
+
+
 
     public function store(Request $request)
     {
@@ -51,8 +55,11 @@ class ProyectoController extends Controller
         if (!$proyecto) {
             return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
         }
-        return view('proyectos.edit', compact('proyecto')); // Retorna una vista para editar el proyecto
+
+        $usuarios = Usuario::all(); // Obtener todos los usuarios
+        return view('proyectos.edit', compact('proyecto', 'usuarios')); // Pasar el proyecto y los usuarios a la vista
     }
+
 
     public function update(Request $request, $id)
     {

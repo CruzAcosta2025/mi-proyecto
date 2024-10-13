@@ -20,9 +20,16 @@ class Tarea extends Model
         'fecha_vencimiento'
     ];
 
-    // Una tarea pertenece a un proyecto
+    // Relación: Una tarea pertenece a un proyecto
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class, 'proyecto_id');
+    }
+
+    // Relación: Una tarea puede tener múltiples usuarios asignados (a través de TareaUsuario)
+    public function usuarios()
+    {
+        return $this->belongsToMany(Usuario::class, 'tarea_usuario', 'tarea_id', 'usuario_id')
+                    ->withPivot('asignado_en');
     }
 }

@@ -17,7 +17,7 @@ class Usuario extends Authenticatable
     protected $fillable = [
         'nombre', 
         'apellidos', 
-        'contraseña', // Cambiado de 'password' a 'contraseña'
+        'password', // Cambiado de 'password' a 'contraseña'
         'email', 
         'rol' // Añadido el campo 'rol'
     ];
@@ -27,14 +27,17 @@ class Usuario extends Authenticatable
 
     // Ocultar el campo de contraseña cuando se convierta a un arreglo o JSON
     protected $hidden = [
-        'contraseña', // Cambiado de 'password' a 'contraseña'
+        'password', // Cambiado de 'password' a 'contraseña'
     ];
 
     // Puedes añadir relaciones aquí si es necesario
+
     public function tareas()
     {
-        return $this->hasMany(TareaUsuario::class, 'usuario_id');
+        return $this->belongsToMany(Tarea::class, 'tarea_usuario', 'usuario_id', 'tarea_id')
+                    ->withPivot('asignado_en');
     }
+
 
     public function proyectos()
     {
