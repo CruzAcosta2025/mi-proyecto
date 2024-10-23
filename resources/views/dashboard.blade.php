@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Tareas y Proyectos</title>
     <link rel="stylesheet" href="{{ asset('assets/css/estilos2.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script defer src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -21,18 +25,10 @@
                 <li><a href="#" id="dashboard-link"><span class="material-icons">dashboard</span> Dashboard</a></li>
                 <li>
                     <a href="#" id="projects-link"><span class="material-icons">assignment</span> Proyectos</a>
-                    <ul class="dropdown">
-                        <li><a href="{{ route('proyectos.create') }}">Añadir nuevo proyecto</a></li>
-                        <li><a href="{{ route('proyectos.index') }}">Listar Proyectos</a></li>
-
-                    </ul>
                 </li>
                 <li>
                     <a href="#" id="tasks-link"><span class="material-icons">check_circle</span> Tareas</a>
-                    <ul class="dropdown">
-                        <li><a href="{{ route('tareas.create') }}">Añadir nueva tarea</a></li>
-                        <li><a href="{{ route('tareas.index') }}">Listar tareas</a></li>
-                    </ul>
+
                 </li>
 
                 <li><a href="#" id="chat-link"><span class="material-icons">chat</span> Chat</a></li>
@@ -48,33 +44,105 @@
             <h1>Bienvenido a tu Panel</h1>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="logout-button">Cerrar Sesión</button>
+                <button type="submit" class="btn btn-danger btn-sm">Cerrar Sesión</button>
             </form>
         </header>
 
-        <section class="content">
+        <section class="content container mt-4">
             <!-- Sección del Dashboard -->
             <div id="dashboard-section">
                 <h2>Dashboard</h2>
                 <p>Aquí podrás ver el resumen de tus proyectos y tareas.</p>
 
-                <div id="dashboard-cards" class="dashboard-cards">
-                    <div class="card">
-                        <h3>2</h3>
-                        <p>Admins</p>
+                <div id="dashboard-cards" class="row">
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>{{ $tareasCount }}</h3>
+                                <p>Tareas</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>0</h3>
-                        <p>Members</p>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>{{ $proyectosCount }}</h3>
+                                <p>Proyectos</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>4</h3>
-                        <p>Categorías</p>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>{{ $usuariosCount }}</h3>
+                                <p>Usuarios</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>10</h3>
-                        <p>Designaciones</p>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <canvas id="tasksChart" class="shadow"></canvas>
                     </div>
+                    <div class="col-md-6">
+                        <canvas id="projectsChart" class="shadow"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Proyectos -->
+            <div id="projects-section" style="display: none;">
+                <h2>Proyectos</h2>
+                <p>Aquí podrás ver todos tus proyectos.</p>
+                <div id="projects-list">
+                    @if ($proyectos->isEmpty())
+                    <div class="alert alert-warning">No hay proyectos disponibles.</div>
+                    @else
+                    <ul class="list-group">
+                        @foreach ($proyectos as $proyecto)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ $proyecto->nombre }}</div>
+                            <div>
+                                <a href="{{ route('proyectos.edit', $proyecto->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('proyectos.destroy', $proyecto->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Sección de Tareas -->
+            <div id="tasks-section" style="display: none;">
+                <h2>Tareas</h2>
+                <p>Aquí podrás ver todas tus tareas.</p>
+                <div id="tasks-list">
+                    @if ($tareas->isEmpty())
+                    <div class="alert alert-warning">No hay tareas disponibles.</div>
+                    @else
+                    <ul class="list-group">
+                        @foreach ($tareas as $tarea)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ $tarea->nombre }}</div>
+                            <div>
+                                <a href="{{ route('tareas.edit', $tarea->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('tareas.destroy', $tarea->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @endif
                 </div>
             </div>
 
@@ -82,7 +150,7 @@
             <div id="chat-section" style="display: none;">
                 <h2>Chat</h2>
                 <p>Aquí podrás chatear con tus compañeros.</p>
-                <div class="chat-window">
+                <div class="chat-window border rounded p-3">
                     <p>Bienvenido al chat. Inicia una conversación.</p>
                 </div>
             </div>
@@ -91,27 +159,29 @@
             <div id="video-section" style="display: none;">
                 <h2>Videoconferencia</h2>
                 <p>Aquí podrás iniciar una videoconferencia con tus compañeros.</p>
-                <button class="start-video-button">Iniciar Videoconferencia</button>
+                <button class="btn btn-primary">Iniciar Videoconferencia</button>
             </div>
 
             <!-- Sección de Edición de Documentos -->
             <div id="edit-section" style="display: none;">
                 <h2>Edición de Documentos</h2>
                 <p>Aquí podrás editar tus documentos.</p>
-                <textarea rows="10" cols="50" placeholder="Escribe aquí tu documento..."></textarea>
-                <button class="save-document-button">Guardar Documento</button>
+                <textarea class="form-control" rows="10" placeholder="Escribe aquí tu documento..."></textarea>
+                <button class="btn btn-success mt-2">Guardar Documento</button>
             </div>
         </section>
     </div>
+
 
     <!-- Script para mostrar/ocultar las secciones -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             mostrarSeccion('dashboard-section'); // Muestra el dashboard al cargar
+            crearGraficos(); // Crea los gráficos al cargar
         });
 
         function mostrarSeccion(seccionId) {
-            const secciones = ['dashboard-section', 'tasks-section', 'chat-section', 'video-section', 'edit-section'];
+            const secciones = ['dashboard-section', 'projects-section', 'tasks-section', 'chat-section', 'video-section', 'edit-section'];
 
             // Oculta todas las secciones
             secciones.forEach(function(id) {
@@ -130,12 +200,12 @@
 
         document.getElementById('projects-link').addEventListener('click', function(event) {
             event.preventDefault();
-            // Aquí puedes decidir mostrar un mensaje o redirigir a otra página si es necesario.
+            mostrarSeccion('projects-section'); // Muestra la sección de proyectos
         });
 
         document.getElementById('tasks-link').addEventListener('click', function(event) {
             event.preventDefault();
-            mostrarSeccion('tasks-section');
+            mostrarSeccion('tasks-section'); // Muestra la sección de tareas
         });
 
         document.getElementById('chat-link').addEventListener('click', function(event) {
@@ -152,11 +222,7 @@
             event.preventDefault();
             mostrarSeccion('edit-section');
         });
-
-        document.getElementById('list-projects-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            window.location.href = "{{ route('proyectos.index') }}"; // Redirige a la lista de proyectos
-        });
     </script>
 </body>
+
 </html>

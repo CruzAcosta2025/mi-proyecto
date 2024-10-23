@@ -13,7 +13,7 @@ Route::get('/login', function () {
     return view('auth'); // Asegúrate de que 'auth' sea la vista correcta para el login
 })->name('login');
 
-Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 

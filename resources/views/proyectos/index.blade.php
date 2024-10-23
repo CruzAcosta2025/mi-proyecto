@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/estilo4.css') }}">
+@endsection
+
 @section('content')
 <div class="container">
     <h1>Proyectos</h1>
@@ -25,24 +29,32 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($proyectos as $proyecto)
-                <tr>
-                    <td>{{ $proyecto->nombre }}</td>
-                    <td>{{ $proyecto->descripcion }}</td>
-                    <td>{{ $proyecto->fecha_inicio }}</td>
-                    <td>{{ $proyecto->fecha_fin }}</td>
-                    <td>
-                        <a href="{{ route('proyectos.show', $proyecto->id) }}" class="btn btn-info">Ver</a>
-                        <a href="{{ route('proyectos.edit', $proyecto->id) }}" class="btn btn-warning">Editar</a>
-                        <form action="{{ route('proyectos.destroy', $proyecto->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
+    @if ($proyectos->isEmpty())
+        <tr>
+            <td colspan="5" class="text-center">No hay proyectos disponibles.</td>
+        </tr>
+    @else
+        @foreach($proyectos as $proyecto)
+            <tr>
+                <td>{{ $proyecto->nombre }}</td>
+                <td>{{ $proyecto->descripcion }}</td>
+                <td>{{ $proyecto->fecha_inicio }}</td>
+                <td>{{ $proyecto->fecha_fin }}</td>
+                <td>
+                    <a href="{{ route('proyectos.show', $proyecto->id) }}" class="btn btn-info">Ver</a>
+                    <a href="{{ route('proyectos.edit', $proyecto->id) }}" class="btn btn-warning">Editar</a>
+                    <form action="{{ route('proyectos.destroy', $proyecto->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    @endif
+</tbody>
+
+  
     </table>
 </div>
 @endsection
