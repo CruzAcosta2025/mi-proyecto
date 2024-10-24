@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <h1>Crear Proyecto</h1>
-
+  
     <form action="{{ route('proyectos.store') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -38,7 +38,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Crear Proyecto</button>
-        <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 @endsection

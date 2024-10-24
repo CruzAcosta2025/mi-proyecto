@@ -14,6 +14,6 @@
         <button type="submit" class="btn btn-danger">Eliminar</button>
     </form>
 
-    <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Volver</a>
+    <a href="{{ route('dashboard') }}" class="btn btn-secondary">Volver</a>
 </div>
 @endsection

@@ -44,7 +44,7 @@ class ProyectoController extends Controller
         ]);
 
         Proyecto::create($request->all());
-        return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
+        return redirect()->route('dashboard')->with('success', 'Proyecto creado exitosamente');
     }
 
     // Actualizar un proyecto existente
@@ -76,7 +76,7 @@ class ProyectoController extends Controller
         ]);
 
         $proyecto->update($request->all());
-        return redirect()->route('proyectos.index')->with('success', 'Proyecto actualizado exitosamente');
+        return redirect()->route('dashboard')->with('success', 'Proyecto actualizado exitosamente');
     }
 
     // Eliminar un proyecto
@@ -88,6 +88,6 @@ class ProyectoController extends Controller
         }
 
         $proyecto->delete();
-        return redirect()->route('proyectos.index')->with('success', 'Proyecto eliminado exitosamente');
+        return redirect()->route('dashboard')->with('success', 'Proyecto eliminado exitosamente');
     }
 }

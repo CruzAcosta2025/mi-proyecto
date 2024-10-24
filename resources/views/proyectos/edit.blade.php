@@ -38,7 +38,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Actualizar Proyecto</button>
-        <a href="{{ route('proyectos.index') }}" class="btn btn-secondary">Cancelar</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 @endsection
