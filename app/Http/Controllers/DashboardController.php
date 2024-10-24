@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Tarea;      // Asegúrate de importar tu modelo Tarea
 use App\Models\Proyecto;   // Asegúrate de importar tu modelo Proyecto
 use App\Models\Usuario;    // Asegúrate de importar tu modelo User
+use App\Models\ProyectoUsuario;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    /**
-     * Muestra el dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
     public function home()
     {
         // Contamos las tareas, proyectos y usuarios
@@ -23,12 +19,11 @@ class DashboardController extends Controller
 
         // Obtener todos los proyectos para mostrarlos en el dashboard
         $proyectos = Proyecto::all();
-
+        $proyectosUsuario = ProyectoUsuario::all();
 
         $tareas = Tarea::all();
 
         // Retornar la vista del dashboard con los datos contados y proyectos
-        return view('dashboard', compact('tareasCount', 'proyectosCount', 'usuariosCount', 'proyectos','tareas'));
+        return view('dashboard', compact('tareasCount', 'proyectosCount', 'usuariosCount', 'proyectos', 'tareas', 'proyectosUsuario'));
     }
 }
-

@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
 {
-    // Mostrar todos los proyectos
+    // En tu controlador donde muestras los proyectos
     public function index()
     {
-        $proyectos = Proyecto::all();
-        return view('proyectos.index', compact('proyectos')); // Retorna una vista
+        $proyectos = Proyecto::with('usuarios')->get(); // Cargar proyectos y sus usuarios
+        return view('dashboard', compact('proyectos')); // Retorna una vista
     }
+
 
     // Mostrar un proyecto específico
     public function show($id)
@@ -43,9 +44,15 @@ class ProyectoController extends Controller
             'usuario_id' => 'required|integer|exists:usuarios,id',
         ]);
 
-        Proyecto::create($request->all());
-        return redirect()->route('dashboard')->with('success', 'Proyecto creado exitosamente');
+        // Crear el proyecto
+        $proyecto = Proyecto::create($request->all());
+
+        // Asociar el usuario al proyecto en la tabla pivot
+        $proyecto->usuarios()->attach($request->usuario_id);
+
+        return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
     }
+
 
     // Actualizar un proyecto existente
     public function edit($id)
@@ -64,7 +71,7 @@ class ProyectoController extends Controller
     {
         $proyecto = Proyecto::find($id);
         if (!$proyecto) {
-            return redirect()->route('proyectos.index')->with('error', 'Proyecto no encontrado');
+            return redirect()->route('dashboard')->with('error', 'Proyecto no encontrado');
         }
 
         $request->validate([

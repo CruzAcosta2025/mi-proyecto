@@ -59,6 +59,8 @@ Route::get('/proyecto_usuario/edit/{id}', [ProyectoUsuarioController::class, 'ed
 // Actualizar la asignación de un usuario a un proyecto
 Route::put('/proyecto_usuario/{id}', [ProyectoUsuarioController::class, 'update'])->name('proyecto_usuario.update');
 
+//
+Route::delete('/proyecto_usuario/{id}', [ProyectoUsuarioController::class, 'destroy'])->name('proyecto_usuario.destroy');
 
 
 // RUTAS PARA TAREAS

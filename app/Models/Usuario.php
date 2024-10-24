@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,10 +15,10 @@ class Usuario extends Authenticatable
 
     // Los campos que pueden ser rellenados
     protected $fillable = [
-        'nombre', 
-        'apellidos', 
+        'nombre',
+        'apellidos',
         'password', // Cambiado de 'password' a 'contraseña'
-        'email', 
+        'email',
         'rol' // Añadido el campo 'rol'
     ];
 
@@ -35,12 +35,13 @@ class Usuario extends Authenticatable
     public function tareas()
     {
         return $this->belongsToMany(Tarea::class, 'tarea_usuario', 'usuario_id', 'tarea_id')
-                    ->withPivot('asignado_en');
+            ->withPivot('asignado_en');
     }
 
 
+    // En el modelo Usuario
     public function proyectos()
     {
-        return $this->hasMany(ProyectoUsuario::class, 'usuario_id');
+        return $this->belongsToMany(Proyecto::class, 'proyecto_usuario', 'usuario_id', 'proyecto_id');
     }
 }

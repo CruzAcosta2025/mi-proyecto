@@ -32,7 +32,7 @@
             <label for="usuario_id" class="form-label">Usuario</label>
             <select class="form-select" id="usuario_id" name="usuario_id" required>
                 @foreach($usuarios as $usuario)
-                    <option value="{{ $usuario->id }}" {{ $proyecto->usuario_id == $usuario->id ? 'selected' : '' }}>{{ $usuario->name }}</option>
+                    <option value="{{ $usuario->id }}" {{ $proyecto->usuario_id == $usuario->id ? 'selected' : '' }}>{{ $usuario->nombres }}</option>
                 @endforeach
             </select>
         </div>

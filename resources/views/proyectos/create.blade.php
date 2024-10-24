@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container">
     <h1>Crear Proyecto</h1>
@@ -32,7 +31,7 @@
             <select class="form-select" id="usuario_id" name="usuario_id" required>
                 <!-- Aquí deberías llenar los usuarios desde el controlador o desde una colección -->
                 @foreach($usuarios as $usuario)
-                    <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                    <option value="{{ $usuario->id }}">{{ $usuario->nombres }} {{ $usuario->apellidos }}</option>
                 @endforeach
             </select>
         </div>

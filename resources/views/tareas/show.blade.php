@@ -18,7 +18,7 @@
             @endforeach
         </ul>
 
-        <a href="{{ route('tareas.index') }}" class="btn btn-secondary">Volver a la lista</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Volver a la lista</a>
         <a href="{{ route('tareas.edit', $tarea->id) }}" class="btn btn-warning">Editar</a>
     </div>
 @endsection

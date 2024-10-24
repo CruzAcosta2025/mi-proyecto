@@ -43,7 +43,7 @@ class TareaController extends Controller
 
         Tarea::create($request->all());
 
-        return redirect()->route('tareas.index')->with('success', 'Tarea creada exitosamente.');
+        return redirect()->route('dashboard')->with('success', 'Tarea creada exitosamente.');
     }
 
     // Mostrar un formulario para editar una tarea existente
@@ -70,7 +70,7 @@ class TareaController extends Controller
 
         $tarea->update($request->all());
 
-        return redirect()->route('tareas.index')->with('success', 'Tarea actualizada exitosamente.');
+        return redirect()->route('dashboard')->with('success', 'Tarea actualizada exitosamente.');
     }
 
     // Eliminar una tarea
@@ -79,7 +79,7 @@ class TareaController extends Controller
         $tarea = Tarea::findOrFail($id);
         $tarea->delete();
 
-        return redirect()->route('tareas.index')->with('success', 'Tarea eliminada exitosamente.');
+        return redirect()->route('dashboard')->with('success', 'Tarea eliminada exitosamente.');
     }
 }
 

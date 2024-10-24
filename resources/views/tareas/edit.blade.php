@@ -51,7 +51,7 @@
             </div>
 
             <button type="submit" class="btn btn-success">Actualizar Tarea</button>
-            <a href="{{ route('tareas.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 @endsection
